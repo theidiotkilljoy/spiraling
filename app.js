@@ -1054,12 +1054,7 @@ function renderDie(
   die.className =
     `die ${type}${rolling ? " rolling" : ""}`;
 
-  /*
-    During the rolling animation,
-    leave the die completely blank.
-  */
   if (rolling) {
-
     die.setAttribute(
       "aria-label",
       `${type === "panic" ? "Panic" : "Normal"} die rolling`
@@ -1087,21 +1082,11 @@ function renderDie(
     img.alt = "";
     img.src = asset;
 
-    img.addEventListener(
-      "error",
-      () => {
-        img.classList.add("missing");
-      },
-      {
-        once: true
-      }
-    );
-
     die.appendChild(img);
   }
 
   return die;
-} 
+}
 
 
 /* -------------------------------------------------------
