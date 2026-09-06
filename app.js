@@ -770,7 +770,6 @@ function subscribeToRolls() {
       )
     );
 
-
   onChildAdded(
     rollsQuery,
     (snapshot) => {
@@ -783,23 +782,14 @@ function subscribeToRolls() {
         return;
       }
 
-
       seenRolls.add(
         snapshot.key
       );
-
 
       const roll =
         normalizeRoll(
           snapshot.val()
         );
-
-
-      addHistoryCard(
-        snapshot.key,
-        roll
-      );
-
 
       const untilReveal =
         Number(
@@ -807,21 +797,19 @@ function subscribeToRolls() {
         ) -
         serverNow();
 
-
       /*
-        Only animate relatively
-        recent rolls.
-
-        Old history should not replay
-        when somebody joins the room.
+        Only animate relatively recent rolls.
+        Older rolls are history and should
+        appear immediately when joining.
       */
-
       const isFresh =
         untilReveal > -2500;
 
-
       if (isFresh) {
 
+        /*
+          Show the rolling animation now.
+        */
         showLiveRoll(
           roll,
           Math.max(
@@ -830,6 +818,36 @@ function subscribeToRolls() {
           )
         );
 
+        /*
+          Add the sidebar result only when
+          the actual dice/results are revealed.
+        */
+        const historyDelay =
+          Math.max(
+            0,
+            untilReveal
+          ) + 650;
+
+        setTimeout(
+          () => {
+            addHistoryCard(
+              snapshot.key,
+              roll
+            );
+          },
+          historyDelay
+        );
+
+      } else {
+
+        /*
+          Old rolls should simply populate
+          the sidebar immediately.
+        */
+        addHistoryCard(
+          snapshot.key,
+          roll
+        );
       }
 
     }
