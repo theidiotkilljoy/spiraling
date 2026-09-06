@@ -1043,39 +1043,30 @@ function renderDiceRow(
   chosen = false
 ) {
 
-  const row =
-    document.createElement(
-      "div"
-    );
-
+  const row = document.createElement("div");
 
   row.className =
-    `dice-row${
-      chosen
-        ? " chosen"
-        : ""
-    }`;
+    `dice-row${chosen ? " chosen" : ""}`;
 
-
-  for (
-    const dieData of dice
-  ) {
-
-    const shownValue =
-      rolling
-        ? secureD10()
-        : clampInt(
-            dieData.value,
-            1,
-            10
-          );
-
+  for (const dieData of dice) {
 
     const type =
       dieData.type === "panic"
         ? "panic"
         : "normal";
 
+    /*
+      While rolling, show a blank die.
+      Do NOT generate a fake/random value.
+    */
+    const shownValue =
+      rolling
+        ? null
+        : clampInt(
+            dieData.value,
+            1,
+            10
+          );
 
     row.appendChild(
       renderDie(
@@ -1084,9 +1075,7 @@ function renderDiceRow(
         rolling
       )
     );
-
   }
-
 
   return row;
 }
@@ -1097,6 +1086,83 @@ function renderDie(
   value,
   rolling
 ) {
+
+  const die = document.createElement("div");
+
+  die.className =
+    `die ${type}${rolling ? " rolling" : ""}`;
+
+  /*
+    During the rolling animation,
+    leave the die completely blank.
+  */
+  if (rolling) {
+
+    die.setAttribute(
+      "aria-label",
+      `${type === "panic" ? "Panic" : "Normal"} die rolling`
+    );
+
+    return die;
+  }
+
+  die.setAttribute(
+    "aria-label",
+    `${type === "panic" ? "Panic" : "Normal"} die: ${value}`
+  );
+
+  const asset =
+    faceAsset(
+      type,
+      value
+    );
+
+  const fallback =
+    document.createElement("span");
+
+  fallback.className =
+    "fallback";
+
+  fallback.textContent =
+    fallbackFace(
+      type,
+      value
+    );
+
+  if (asset) {
+
+    const img =
+      document.createElement("img");
+
+    img.alt = "";
+    img.src = asset;
+
+    img.addEventListener(
+      "error",
+      () => {
+        img.classList.add("missing");
+      },
+      {
+        once: true
+      }
+    );
+
+    die.append(
+      img,
+      fallback
+    );
+
+  } else {
+
+    die.appendChild(
+      fallback
+    );
+  }
+
+  return die;
+} 
+
+{
 
   const die =
     document.createElement(
