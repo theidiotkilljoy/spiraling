@@ -1079,18 +1079,6 @@ function renderDie(
       value
     );
 
-  const fallback =
-    document.createElement("span");
-
-  fallback.className =
-    "fallback";
-
-  fallback.textContent =
-    fallbackFace(
-      type,
-      value
-    );
-
   if (asset) {
 
     const img =
@@ -1109,16 +1097,7 @@ function renderDie(
       }
     );
 
-    die.append(
-      img,
-      fallback
-    );
-
-  } else {
-
-    die.appendChild(
-      fallback
-    );
+    die.appendChild(img);
   }
 
   return die;
