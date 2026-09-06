@@ -205,7 +205,7 @@ function subscribeToDifficulty() {
           5
         );
 
-      if (dmMode && isDmOwner) {
+      if (dmMode) {
         difficultyInput.value =
           String(currentDifficulty);
       }
@@ -220,8 +220,7 @@ difficultyInput.addEventListener(
 
     if (
       !db ||
-      !dmMode ||
-      !isDmOwner
+      !dmMode
     ) {
       return;
     }
