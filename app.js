@@ -155,48 +155,9 @@ function ensureRoomId() {
 ------------------------------------------------------- */
 
 async function initializeDifficulty() {
-  const ownerRef =
-    ref(db, `rooms/${roomId}/settings/ownerUid`);
 
   const difficultyRef =
     ref(db, `rooms/${roomId}/settings/difficulty`);
-
-  if (dmMode) {
-    try {
-      const claim = await runTransaction(
-        ownerRef,
-        (ownerUid) => {
-          return ownerUid || auth.currentUser.uid;
-        },
-        {
-          applyLocally: false
-        }
-      );
-
-      isDmOwner =
-        claim.snapshot.val() === auth.currentUser.uid;
-
-    } catch (error) {
-      console.warn(
-        "DM ownership claim failed:",
-        error
-      );
-
-      const ownerSnapshot =
-        await get(ownerRef);
-
-      isDmOwner =
-        ownerSnapshot.val() === auth.currentUser.uid;
-    }
-
-  } else {
-    const ownerSnapshot =
-      await get(ownerRef);
-
-    isDmOwner =
-      ownerSnapshot.val() === auth.currentUser.uid;
-  }
-
 
   const difficultySnapshot =
     await get(difficultyRef);
@@ -210,18 +171,20 @@ async function initializeDifficulty() {
 
   currentDifficulty = storedDifficulty;
 
+  if (dmMode) {
 
-  if (dmMode && isDmOwner) {
     dmControls.hidden = false;
 
     difficultyInput.value =
       String(currentDifficulty);
 
     if (!difficultySnapshot.exists()) {
+
       await set(
         difficultyRef,
         currentDifficulty
       );
+
     }
   }
 }
