@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090909" />
+  <title>I Want to Play a Game</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="game-panel" aria-labelledby="game-title">
+      <h1 id="game-title">I Want to Play a Game</h1>
+
+      <form id="roll-form" autocomplete="off">
+        <div class="field">
+          <label for="player-name">Name</label>
+          <input id="player-name" name="playerName" type="text" maxlength="32" required />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dice-count">Number of Dice</label>
+            <select id="dice-count" name="diceCount" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="panic-count">Number of Panic Dice</label>
+            <select id="panic-count" name="panicCount" required>
+              <option value="0" selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="check-field" for="advantage">
+          <input id="advantage" name="advantage" type="checkbox" />
+          <span>Advantage</span>
+        </label>
+
+        <div id="dm-controls" class="dm-controls" hidden>
+          <label for="difficulty">Difficulty</label>
+          <select id="difficulty" name="difficulty">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <button id="roll-button" type="submit">ROLL</button>
+      </form>
+
+      <section id="live-roll" class="live-roll" aria-live="polite" aria-atomic="true">
+        <div id="live-name" class="live-name"></div>
+        <div id="live-dice" class="dice-area"></div>
+        <div id="live-result" class="result"></div>
+        <div id="live-panic" class="panic-message"></div>
+      </section>
+    </section>
+
+    <aside id="history" class="history" aria-live="polite"></aside>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
