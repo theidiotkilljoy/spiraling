@@ -3,6 +3,7 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyAmigmfs27UegRxIfMLkP4g-0uDtfcNzbc",
   authDomain: "spiraling-c2df8.firebaseapp.com",
+  databaseURL: "https://console.firebase.google.com/u/1/project/spiraling-c2df8/database/spiraling-c2df8-default-rtdb/data/~2F",
   projectId: "spiraling-c2df8",
   storageBucket: "spiraling-c2df8.firebasestorage.app",
   messagingSenderId: "590487321291",
